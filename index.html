@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BPN - Bosque Provincia de Neuquén | Destino Natural Único</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0F1F0F;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(13, 23, 13, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4ADE80;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #FFFFFF;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            color: #4ADE80;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(15, 31, 15, 0.8), rgba(27, 47, 27, 0.8)), 
+                        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 95, 70, 0.1), rgba(16, 185, 129, 0.1));
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 2s ease-out forwards;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #4ADE80, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #059669, #10B981);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(5, 150, 105, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(5, 150, 105, 0.4);
+        }
+        
+        /* Sections */
+        .section {
+            padding: 5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #4ADE80;
+        }
+        
+        /* About Section */
+        .about {
+            background: #1B2F1B;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+        
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 95, 70, 0.3), rgba(5, 150, 105, 0.3));
+        }
+        
+        .about-image span {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            z-index: 2;
+        }
+        
+        /* Features Grid */
+        .features {
+            background: #0F1F0F;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #1B2F1B 0%, #2F3F2F 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(5, 150, 105, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            color: #4ADE80;
+            margin-bottom: 1rem;
+        }
+        
+        /* Gallery */
+        .gallery {
+            background: #1B2F1B;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .gallery-item {
+            height: 200px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 95, 70, 0.4), rgba(5, 150, 105, 0.4));
+        }
+        
+        .gallery-item::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+        
+        .gallery-item:hover::after {
+            transform: translateY(0);
+        }
+        
+        .gallery-item:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'); }
+        .gallery-item:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'); }
+        .gallery-item:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'); }
+        .gallery-item:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'); }
+        .gallery-item:nth-child(5) { background-image: url('https://images.unsplash.com/photo-1533628635777-112b2239b1c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'); }
+        .gallery-item:nth-child(6) { background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'); }
+        .gallery-item:nth-child(7) { background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'); }
+        .gallery-item:nth-child(8) { background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'); }
+        
+        /* Location */
+        .location {
+            background: #0F1F0F;
+        }
+        
+        .location-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .location-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .location-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(27, 47, 27, 0.5);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .location-item:hover {
+            background: rgba(27, 47, 27, 0.8);
+            transform: translateX(10px);
+        }
+        
+        .location-item i {
+            font-size: 1.5rem;
+            color: #4ADE80;
+            margin-right: 1rem;
+        }
+        
+        .map-container {
+            height: 400px;
+            background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 95, 70, 0.6), rgba(5, 150, 105, 0.6));
+        }
+        
+        .map-container span {
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        footer {
+            background: #0A1A0A;
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(74, 222, 128, 0.2);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: #4ADE80;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #10B981;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content,
+            .location-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 3rem 5%;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">🌲 BPN</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#experiencias">Experiencias</a></li>
+                <li><a href="#galeria">Galería</a></li>
+                <li><a href="#ubicacion">Ubicación</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>BPN - Bosque Provincia de Neuquén</h1>
+            <p>Descubre la magia de los bosques andino-patagónicos en su estado más puro. Arrayanes centenarios, bosques sumergidos y senderos naturales te esperan para conectarte con la esencia natural de Neuquén.</p>
+            <a href="#ubicacion" class="cta-button">Planifica tu Visita</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="nosotros">
+        <div class="fade-in">
+            <h2>Sobre BPN</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>BPN (Bosque Provincia de Neuquén) es un refugio natural que protege los ecosistemas andino-patagónicos más representativos de la región. Conserva ejemplares de arrayanes con más de 650 años de edad y una altura superior a los 15 metros, siendo parte del corredor biológico que conecta con áreas protegidas como el Parque Nacional Los Arrayanes.</p>
+                    <br>
+                    <p>Se trata de una delgada franja boscosa que se extiende por unas 6.450.000 hectáreas en la región patagónica, y BPN resguarda una muestra representativa de estos bosques únicos, donde los visitantes pueden experimentar la biodiversidad excepcional de la Patagonia andina.</p>
+                    <br>
+                    <p>Villa Traful, nuestro punto de acceso principal, se encuentra en el corazón de los 7 Lagos, con playas únicas, bosques vírgenes y montañas sin explorar. Es el destino perfecto para vivir la naturaleza a pleno.</p>
+                </div>
+                <div class="about-image">
+                    <span>Vista del Bosque Patagónico</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="experiencias">
+        <div class="fade-in">
+            <h2>Experiencias Únicas</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌲</div>
+                    <h3>Bosque de Arrayanes</h3>
+                    <p>Descubre ejemplares centenarios de arrayanes únicos en color y textura, con árboles de más de 650 años. Siente la poderosa energía que transmite este bosque milenario del Parque Nacional Los Arrayanes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💧</div>
+                    <h3>Bosque Sumergido</h3>
+                    <p>Explora el fascinante bosque sumergido de Villa Traful, una maravilla natural candidata a patrimonio nacional. Ideal para buceo y fotografía subacuática en el cristalino Lago Traful.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏔️</div>
+                    <h3>Miradores Panorámicos</h3>
+                    <p>Contempla imponentes paisajes de volcanes y montañas desde nuestros miradores estratégicos. Postales únicas del lago Traful y la cordillera neuquina en el circuito de los 7 Lagos.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🥾</div>
+                    <h3>Senderos Naturales</h3>
+                    <p>Recorre senderos señalizados que atraviesan bosques de coihue, lenga y ñire. Caminatas para todos los niveles con interpretación ambiental y acceso a cascadas como Coa Co y Blanco.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🦅</div>
+                    <h3>Fauna Patagónica</h3>
+                    <p>Observa cóndores, cauquenes, cormoranes y especies autóctonas en su hábitat natural. Ideal para avistaje de aves y fotografía de naturaleza en el ecosistema andino-patagónico.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌿</div>
+                    <h3>Actividades Outdoor</h3>
+                    <p>Disfruta de trekking, senderismo, pesca deportiva, observación de aves, campamentismo, actividades lacustres y cabalgatas. Experiencias únicas en contacto con la naturaleza.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section gallery" id="galeria">
+        <div class="fade-in">
+            <h2>Galería del Bosque</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-label="Arrayanes Centenarios"></div>
+                <div class="gallery-item" data-label="Bosque Sumergido Traful"></div>
+                <div class="gallery-item" data-label="Lago Traful"></div>
+                <div class="gallery-item" data-label="Senderos Naturales"></div>
+                <div class="gallery-item" data-label="Fauna Patagónica"></div>
+                <div class="gallery-item" data-label="Miradores Panorámicos"></div>
+                <div class="gallery-item" data-label="Bosque de Coihues"></div>
+                <div class="gallery-item" data-label="Villa Traful"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="section location" id="ubicacion">
+        <div class="fade-in">
+            <h2>Ubicación y Acceso</h2>
+            <div class="location-content">
+                <div class="location-info">
+                    <div class="location-item">
+                        <i>📍</i>
+                        <div>
+                            <h3>Ubicación Principal</h3>
+                            <p>Villa Traful, Lago Traful - Provincia de Neuquén, Argentina. Acceso por Ruta Provincial 65, en el corazón de los 7 Lagos.</p>
+                        </div>
+                    </div>
+                    <div class="location-item">
+                        <i>🚗</i>
+                        <div>
+                            <h3>Acceso en Vehículo</h3>
+                            <p>60 km desde Villa La Angostura, 100 km desde Bariloche, 105 km desde San Martín de los Andes. Ruta pavimentada y señalizada.</p>
+                        </div>
+                    </div>
+                    <div class="location-item">
+                        <i>🚌</i>
+                        <div>
+                            <h3>Transporte Público</h3>
+                            <p>Servicios regulares desde Villa La Angostura y conexiones con Bariloche. Consultar horarios estacionales en temporada.</p>
+                        </div>
+                    </div>
+                    <div class="location-item">
+                        <i>🕒</i>
+                        <div>
+                            <h3>Horarios de Visita</h3>
+                            <p>Acceso libre las 24 horas. Servicios y actividades guiadas: 9:00 - 17:00 hrs. Consultar disponibilidad estacional.</p>
+                        </div>
+                    </div>
+                    <div class="location-item">
+                        <i>🆓</i>
+                        <div>
+                            <h3>Entrada Gratuita</h3>
+                            <p>Acceso libre y gratuito para todos los visitantes. Turismo sustentable y accesible en la Patagonia neuquina.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-container">
+                    <span>Villa Traful - Lago Traful - Neuquén</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="tel:+5402944479020">📞 Comisión de Fomento: (02944) 479020</a>
+                <a href="tel:+5402944479040">🚨 Destacamento Policial: (02944) 479040</a>
+                <a href="tel:+5402944423121">📞 Parque Los Arrayanes: (02944) 423121</a>
+                <a href="mailto:informesnh@apn.gob.ar">✉️ informesnh@apn.gob.ar</a>
+                <a href="mailto:losarrayanes@apn.gob.ar">✉️ losarrayanes@apn.gob.ar</a>
+                <a href="https://www.villatraful.com.ar">🌐 www.villatraful.com.ar</a>
+            </div>
+            <p>&copy; 2024 BPN - Bosque Provincia de Neuquén. Todos los derechos reservados.</p>
+            <p>📍 Villa Traful - Departamento Los Lagos - Provincia de Neuquén - Argentina</p>
+            <p>🌿 Compromiso con la conservación y el turismo sustentable</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 26, 10, 0.95)';
+            } else {
+                header.style.background = 'rgba(13, 23, 13, 0.95)';
+            }
+        });
+
+        // Gallery item click with real information
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const label = this.getAttribute('data-label');
+                let description = '';
+                
+                switch(label) {
+                    case 'Arrayanes Centenarios':
+                        description = 'Los arrayanes del Parque Nacional Los Arrayanes son únicos en el mundo. Estos árboles centenarios pueden vivir más de 650 años y alcanzar alturas de 15-20 metros. Su corteza canela característica y su forma retorcida los hacen únicos en la Patagonia.';
+                        break;
+                    case 'Bosque Sumergido Traful':
+                        description = 'El bosque sumergido de Villa Traful es uno de los atractivos más únicos de la Patagonia. Formado por un deslizamiento de tierra hace 60 años, estos cipreses sumergidos crean un paisaje subacuático único ideal para buceo y snorkel.';
+                        break;
+                    case 'Lago Traful':
+                        description = 'El Lago Traful es famoso por sus aguas cristalinas de color azul intenso. Con 76 km² de superficie, es ideal para pesca deportiva, deportes náuticos y contemplación. Forma parte del circuito de los 7 Lagos de Neuquén.';
+                        break;
+                    case 'Senderos Naturales':
+                        description = 'Los senderos incluyen el Mirador del Traful, Cascada Coa Co, Cascada Blanco y senderos interpretativos. Ofrecen diferentes niveles de dificultad y permiten conocer la flora y fauna patagónica.';
+                        break;
+                    case 'Fauna Patagónica':
+                        description = 'La fauna incluye cóndores andinos, cauquenes, cormoranes, truchas, huemul, puma, zorro gris, chinchillón y más de 100 especies de aves. Es un paraíso para la observación de vida silvestre.';
+                        break;
+                    case 'Miradores Panorámicos':
+                        description = 'Los miradores ofrecen vistas espectaculares del Lago Traful, la cordillera de los Andes y el valle. El Mirador del Traful es el más popular, con vista panorámica de 360 grados.';
+                        break;
+                    case 'Bosque de Coihues':
+                        description = 'Los bosques de coihue (Nothofagus dombeyi) son característicos de la región. Estos árboles nativos pueden alcanzar 40 metros de altura y forman parte del bosque andino-patagónico.';
+                        break;
+                    case 'Villa Traful':
+                        description = 'Villa Traful es un pequeño pueblo patagónico con 500 habitantes, ubicado en el corazón de los 7 Lagos. Ofrece hospedaje, gastronomía local y es base para explorar la región.';
+                        break;
+                }
+                
+                alert(`🌲 ${label}\n\n${description}\n\n📍 Ubicación: Villa Traful, Neuquén, Argentina`);
+            });
+        });
+
+        // CTA button smooth scroll
+        document.querySelector('.cta-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('#ubicacion').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Phone number formatting and validation
+        document.querySelectorAll('a[href^="tel:"]').forEach(tel => {
+            tel.addEventListener('click', function(e) {
+                const confirmCall = confirm(`¿Deseas llamar a ${this.textContent}?`);
+                if (!confirmCall) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Email validation
+        document.querySelectorAll('a[href^="mailto:"]').forEach(email => {
+            email.addEventListener('click', function(e) {
+                const confirmEmail = confirm(`¿Deseas enviar un email a ${this.href.replace('mailto:', '')}?`);
+                if (!confirmEmail) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Loading animation
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '1';
+        });
+
+        // Mobile menu toggle (for future implementation)
+        const mobileMenuToggle = document.createElement('button');
+        mobileMenuToggle.innerHTML = '☰';
+        mobileMenuToggle.style.cssText = `
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        `;
+        
+        // Add mobile menu functionality
+        if (window.innerWidth <= 768) {
+            mobileMenuToggle.style.display = 'block';
+            document.querySelector('nav').appendChild(mobileMenuToggle);
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                const navLinks = document.querySelector('.nav-links');
+                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            });
+        }
+    </script>
+
+        
